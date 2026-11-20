@@ -1,0 +1,45 @@
+[package]
+name = "ias-nexus"
+version = "0.1.0"
+description = "IAS Nexus — Orquestrador de IAs + Home Lab"
+authors = ["Douglas"]
+edition = "2021"
+
+[lib]
+name = "ias_nexus_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = ["tray-icon"] }
+tauri-plugin-single-instance = "2"
+tauri-plugin-autostart = "2"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+thiserror = "2"
+rusqlite = { version = "0.32", features = ["bundled"] }
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter", "fmt"] }
+tracing-appender = "0.2"
+sysinfo = { version = "0.33", default-features = false, features = ["system"] }
+
+# Cofre de chaves: no Windows usa o Gerenciador de Credenciais nativo.
+[target.'cfg(windows)'.dependencies]
+keyring = { version = "3", features = ["windows-native"] }
+
+# Fora do Windows (apenas para desenvolvimento/testes) usa o armazenamento em memória.
+[target.'cfg(not(windows))'.dependencies]
+keyring = "3"
+
+[dev-dependencies]
+tempfile = "3"
+
+# Perfil de release focado em velocidade e tamanho
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+panic = "abort"
+strip = true

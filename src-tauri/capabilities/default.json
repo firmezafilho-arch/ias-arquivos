@@ -1,0 +1,7 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "default",
+  "description": "Permissões da janela principal. Mantidas no mínimo: os recursos do app passam pelos comandos próprios do backend.",
+  "windows": ["main"],
+  "permissions": ["core:default"]
+}
